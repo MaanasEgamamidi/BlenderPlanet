@@ -32,10 +32,13 @@ const nebula = createNebula();
 const stars = createStarfield();
 scene.add(nebula, stars);
 
-scene.add(new THREE.AmbientLight('#6a7498', 0.6));
-// Soft cool fill so night hemispheres still read. A hemisphere light adds no
-// specular highlight, so glossy oceans only ever glint toward the real star.
-scene.add(new THREE.HemisphereLight('#c8cedf', '#34343f', 1.0));
+// The star is the key light. The fills stand in for starlight and nebula glow so
+// night hemispheres stay readable. Both are specular-free, so oceans only glint toward the star.
+scene.add(new THREE.AmbientLight('#4a5578', 0.08));
+// Aimed from over the viewer's shoulder each frame, so the night side still shades as a sphere.
+const fill = new THREE.HemisphereLight('#8fa2d0', '#15131d', 0.75);
+const FILL_DIR = new THREE.Vector3(-0.6, 0.5, 1).normalize();
+scene.add(fill);
 
 // Multisampled HDR target: keeps thin orbit lines and hex seams smooth
 // (the composer's default target has no MSAA).
@@ -141,7 +144,7 @@ const app = {
     while ((prev = this.history.pop())) {
       if (this.system.bodies.has(prev)) return this.focus(prev, { remember: false });
     }
-    ui.toast('No previous planet');
+    ui.toast('No previous planet', { kicker: 'NAVIGATION' });
   },
 
   launch() {
@@ -156,7 +159,7 @@ const app = {
     const p = store.addPlanet(store.galaxy.id, data);
     await this.system.addPlanet(p, { spawn: true });
     this.focus(p.id);
-    ui.toast(`${p.name} charted`);
+    ui.toast(`${p.name} charted`, { kicker: 'PLANET DISCOVERED' });
   },
 
   async updatePlanet(id, patch) {
@@ -256,10 +259,10 @@ store.addEventListener('planet', async (e) => {
   ui.renderAll();
   if (!isSaved(before) && isSaved(planet)) {
     celebrate(planet.id);
-    ui.toast(`${planet.name} has been saved!`);
+    ui.toast(`${planet.name} has been saved`, { kicker: 'PLANET SAVED' });
     emit('saved', { planet, galaxy: store.galaxy });
   } else if (planet.completed > before.completed) {
-    ui.toast(`Sector secured on ${planet.name}`);
+    ui.toast(`Sector secured on ${planet.name}`, { kicker: 'COURSE UPDATED' });
   }
 });
 
@@ -330,12 +333,12 @@ const labels = new Map();
 const tmp = new THREE.Vector3();
 const tmp2 = new THREE.Vector3();
 
-const panel = document.querySelector('.planet-panel');
-let panelRect = null;
-window.addEventListener('resize', () => (panelRect = null));
+const panels = [...document.querySelectorAll('.planet-panel, .right-col')];
+let panelRects = null;
+window.addEventListener('resize', () => (panelRects = null));
 
 function updateLabels() {
-  panelRect ??= panel.getBoundingClientRect();
+  panelRects ??= panels.map((p) => p.getBoundingClientRect());
   const bodies = app.system ? [...app.system.bodies.values()] : [];
   const live = new Set();
   const focus = app.system?.bodies.get(app.focusId);
@@ -354,7 +357,7 @@ function updateLabels() {
       labelRoot.appendChild(el);
       labels.set(b.data.id, el);
     }
-    const text = `${b.data.name}${isSaved(b.data) ? ' ✓' : ''}`;
+    const text = `${b.data.name}${isSaved(b.data) ? ' âœ“' : ''}`;
     if (el.dataset.text !== text + b.data.course) {
       el.dataset.text = text + b.data.course;
       el.innerHTML = '';
@@ -375,7 +378,7 @@ function updateLabels() {
     }
     const sx = (below.x * 0.5 + 0.5) * window.innerWidth;
     const sy = (-below.y * 0.5 + 0.5) * window.innerHeight + 4;
-    if (sx > panelRect.left - 60 && sy > panelRect.top - 30 && sy < panelRect.bottom && sx < panelRect.right + 60) visible = false;
+    if (panelRects.some((r) => sx > r.left - 60 && sy > r.top - 30 && sy < r.bottom && sx < r.right + 60)) visible = false;
     el.style.opacity = visible ? (b.data.id === hoverId ? '1' : '0.75') : '0';
     el.classList.toggle('hover', b.data.id === hoverId);
     el.style.transform = `translate(${sx}px, ${sy}px) translate(-50%, 0)`;
@@ -410,6 +413,7 @@ function tick(dt) {
   surfaceUniform.value = ease(app.surfaceT);
   app.system?.update(dt);
   rig.update(dt);
+  fill.position.copy(FILL_DIR).applyQuaternion(camera.quaternion);
   nebula.position.copy(camera.position);
   stars.position.copy(camera.position);
   nebula.material.uniforms.uTime.value = t;

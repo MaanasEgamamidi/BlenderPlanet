@@ -29,14 +29,23 @@ npm run dev
 
 ## Controls
 
+The HUD follows Starfield's menu layout: planet list on the left, the focused planet's card on
+the right, the galaxy switcher top-centre and a key-prompt bar bottom-right (every prompt is also clickable).
+
 - Click a planet in the list, or on a planet in the scene, to fly to it.
-- `←` / `→` (or `A` / `D`) to cycle through planets. `Enter` launches. `N` adds a planet.
+- `←` / `→` (or `A` / `D`) to cycle through planets. `Enter` launches. `N` adds a planet,
+  `R` edits the focused one, `X` removes it, `B` flies back to the previous planet.
 - Drag to orbit around the focused planet. Scroll or pinch to zoom.
-- **Hex field / Smooth** (top left, or `T`) switches every world between the hex tiles and a
+- **Hex field / Smooth** (under the planet card, or `T`) switches every world between the hex tiles and a
   continuous smooth surface. The change sweeps across each planet from pole to pole. The choice is
   remembered, and the smooth meshes only download the first time you switch.
-- **Galaxies** (top right) switches galaxy or creates a new one (warp transition).
+- `Q` / `E` (or the bumpers beside the galaxy name) switch galaxy with a warp transition. Click the
+  galaxy name to list every galaxy or create a new one.
 - **New Planet** charts a course planet: pick a biome, a terrain seed, a size and a colour shift.
+
+The UI font stack starts with NB Architekt / NB Grotesk (Starfield's commercial fonts) and falls back to
+the bundled Red Hat Display / Red Hat Text. The real fonts only apply if they are installed on the
+viewer's machine or served from a licensed `@font-face`.
 
 ## Plugging in your course app
 

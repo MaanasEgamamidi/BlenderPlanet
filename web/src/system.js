@@ -101,7 +101,7 @@ export class StarSystem {
     outer.scale.setScalar(STAR_RADIUS * 8);
     star.add(corona, outer);
 
-    const light = new THREE.PointLight(glowColor.clone().lerp(new THREE.Color('#ffffff'), 0.55), 3.0, 0, 0);
+    const light = new THREE.PointLight(glowColor.clone().lerp(new THREE.Color('#ffffff'), 0.7), 4.2, 0, 0);
     star.add(light);
 
     this.star = { group: star, spin, mesh, smooth: null, info, corona, outer, light, radius: STAR_RADIUS, color: glowColor };
