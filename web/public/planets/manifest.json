@@ -1,0 +1,300 @@
+{
+  "biomes": {
+    "terran": {
+      "label": "Terran",
+      "atmosphere": "#6fc3ff",
+      "swatch": "#2c8ad1",
+      "variants": [
+        {
+          "file": "terran_0.glb",
+          "smooth": {
+            "albedo": "terran_0_albedo.jpg",
+            "normal": "terran_0_normal.jpg",
+            "data": "terran_0_data.png"
+          },
+          "tiles": 5762,
+          "rings": false
+        },
+        {
+          "file": "terran_1.glb",
+          "smooth": {
+            "albedo": "terran_1_albedo.jpg",
+            "normal": "terran_1_normal.jpg",
+            "data": "terran_1_data.png"
+          },
+          "tiles": 5762,
+          "rings": false
+        }
+      ]
+    },
+    "lava": {
+      "label": "Volcanic",
+      "atmosphere": "#ff7a3c",
+      "swatch": "#ff5a1a",
+      "variants": [
+        {
+          "file": "lava_0.glb",
+          "smooth": {
+            "albedo": "lava_0_albedo.jpg",
+            "normal": "lava_0_normal.jpg",
+            "data": "lava_0_data.png"
+          },
+          "tiles": 5762,
+          "rings": false
+        },
+        {
+          "file": "lava_1.glb",
+          "smooth": {
+            "albedo": "lava_1_albedo.jpg",
+            "normal": "lava_1_normal.jpg",
+            "data": "lava_1_data.png"
+          },
+          "tiles": 5762,
+          "rings": false
+        }
+      ]
+    },
+    "ice": {
+      "label": "Glacial",
+      "atmosphere": "#bfefff",
+      "swatch": "#c7e4f2",
+      "variants": [
+        {
+          "file": "ice_0.glb",
+          "smooth": {
+            "albedo": "ice_0_albedo.jpg",
+            "normal": "ice_0_normal.jpg",
+            "data": "ice_0_data.png"
+          },
+          "tiles": 5762,
+          "rings": false
+        },
+        {
+          "file": "ice_1.glb",
+          "smooth": {
+            "albedo": "ice_1_albedo.jpg",
+            "normal": "ice_1_normal.jpg",
+            "data": "ice_1_data.png"
+          },
+          "tiles": 5762,
+          "rings": true
+        }
+      ]
+    },
+    "desert": {
+      "label": "Dune",
+      "atmosphere": "#ffb27a",
+      "swatch": "#c4622d",
+      "variants": [
+        {
+          "file": "desert_0.glb",
+          "smooth": {
+            "albedo": "desert_0_albedo.jpg",
+            "normal": "desert_0_normal.jpg",
+            "data": "desert_0_data.png"
+          },
+          "tiles": 5762,
+          "rings": false
+        },
+        {
+          "file": "desert_1.glb",
+          "smooth": {
+            "albedo": "desert_1_albedo.jpg",
+            "normal": "desert_1_normal.jpg",
+            "data": "desert_1_data.png"
+          },
+          "tiles": 5762,
+          "rings": false
+        }
+      ]
+    },
+    "toxic": {
+      "label": "Toxic",
+      "atmosphere": "#b77cff",
+      "swatch": "#4b2a6e",
+      "variants": [
+        {
+          "file": "toxic_0.glb",
+          "smooth": {
+            "albedo": "toxic_0_albedo.jpg",
+            "normal": "toxic_0_normal.jpg",
+            "data": "toxic_0_data.png"
+          },
+          "tiles": 5762,
+          "rings": false
+        },
+        {
+          "file": "toxic_1.glb",
+          "smooth": {
+            "albedo": "toxic_1_albedo.jpg",
+            "normal": "toxic_1_normal.jpg",
+            "data": "toxic_1_data.png"
+          },
+          "tiles": 5762,
+          "rings": false
+        }
+      ]
+    },
+    "crystal": {
+      "label": "Crystal",
+      "atmosphere": "#5ff4ff",
+      "swatch": "#33f0ff",
+      "variants": [
+        {
+          "file": "crystal_0.glb",
+          "smooth": {
+            "albedo": "crystal_0_albedo.jpg",
+            "normal": "crystal_0_normal.jpg",
+            "data": "crystal_0_data.png"
+          },
+          "tiles": 5762,
+          "rings": false
+        },
+        {
+          "file": "crystal_1.glb",
+          "smooth": {
+            "albedo": "crystal_1_albedo.jpg",
+            "normal": "crystal_1_normal.jpg",
+            "data": "crystal_1_data.png"
+          },
+          "tiles": 5762,
+          "rings": true
+        }
+      ]
+    },
+    "gas": {
+      "label": "Gas Giant",
+      "atmosphere": "#ffd9a8",
+      "swatch": "#e8d2ae",
+      "variants": [
+        {
+          "file": "gas_0.glb",
+          "smooth": {
+            "albedo": "gas_0_albedo.jpg",
+            "normal": "gas_0_normal.jpg",
+            "data": "gas_0_data.png"
+          },
+          "tiles": 5762,
+          "rings": true
+        },
+        {
+          "file": "gas_1.glb",
+          "smooth": {
+            "albedo": "gas_1_albedo.jpg",
+            "normal": "gas_1_normal.jpg",
+            "data": "gas_1_data.png"
+          },
+          "tiles": 5762,
+          "rings": true
+        }
+      ]
+    },
+    "jungle": {
+      "label": "Jungle",
+      "atmosphere": "#8dffb0",
+      "swatch": "#2d7d34",
+      "variants": [
+        {
+          "file": "jungle_0.glb",
+          "smooth": {
+            "albedo": "jungle_0_albedo.jpg",
+            "normal": "jungle_0_normal.jpg",
+            "data": "jungle_0_data.png"
+          },
+          "tiles": 5762,
+          "rings": false
+        },
+        {
+          "file": "jungle_1.glb",
+          "smooth": {
+            "albedo": "jungle_1_albedo.jpg",
+            "normal": "jungle_1_normal.jpg",
+            "data": "jungle_1_data.png"
+          },
+          "tiles": 5762,
+          "rings": false
+        }
+      ]
+    },
+    "moon": {
+      "label": "Barren",
+      "atmosphere": "#c9c9d6",
+      "swatch": "#75757c",
+      "variants": [
+        {
+          "file": "moon_0.glb",
+          "smooth": {
+            "albedo": "moon_0_albedo.jpg",
+            "normal": "moon_0_normal.jpg",
+            "data": "moon_0_data.png"
+          },
+          "tiles": 5762,
+          "rings": false
+        },
+        {
+          "file": "moon_1.glb",
+          "smooth": {
+            "albedo": "moon_1_albedo.jpg",
+            "normal": "moon_1_normal.jpg",
+            "data": "moon_1_data.png"
+          },
+          "tiles": 5762,
+          "rings": false
+        }
+      ]
+    },
+    "ember": {
+      "label": "Ember",
+      "atmosphere": "#ff6a4a",
+      "swatch": "#8f3b21",
+      "variants": [
+        {
+          "file": "ember_0.glb",
+          "smooth": {
+            "albedo": "ember_0_albedo.jpg",
+            "normal": "ember_0_normal.jpg",
+            "data": "ember_0_data.png"
+          },
+          "tiles": 5762,
+          "rings": false
+        },
+        {
+          "file": "ember_1.glb",
+          "smooth": {
+            "albedo": "ember_1_albedo.jpg",
+            "normal": "ember_1_normal.jpg",
+            "data": "ember_1_data.png"
+          },
+          "tiles": 5762,
+          "rings": false
+        }
+      ]
+    }
+  },
+  "stars": {
+    "star_yellow": {
+      "label": "Yellow Star",
+      "glow": "#ffb347",
+      "file": "star_yellow.glb",
+      "smooth": {
+        "albedo": "star_yellow_albedo.jpg"
+      }
+    },
+    "star_red": {
+      "label": "Red Dwarf",
+      "glow": "#ff4a2a",
+      "file": "star_red.glb",
+      "smooth": {
+        "albedo": "star_red_albedo.jpg"
+      }
+    },
+    "star_blue": {
+      "label": "Blue Giant",
+      "glow": "#7fb2ff",
+      "file": "star_blue.glb",
+      "smooth": {
+        "albedo": "star_blue_albedo.jpg"
+      }
+    }
+  }
+}

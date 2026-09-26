@@ -1,0 +1,417 @@
+@import "@fontsource/chakra-petch/400.css";
+@import "@fontsource/chakra-petch/600.css";
+@import "@fontsource/chakra-petch/700.css";
+
+:root {
+  --accent: #ffd37f;
+  --accent-strong: #ffbf4a;
+  --claim: #ffb13b;
+  --ink: #f2f2f2;
+  --muted: #9aa0b4;
+  --panel: rgba(12, 12, 20, 0.72);
+  --panel-solid: #0d0d16;
+  --line: #5c5c6b;
+  --danger: #ff5a4a;
+  --bevel: 10px;
+  font-family: "Chakra Petch", system-ui, sans-serif;
+  color: var(--ink);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#scene {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+  touch-action: none;
+}
+#scene.dragging { cursor: grabbing; }
+#scene.hovering { cursor: pointer; }
+
+#ui { position: fixed; inset: 0; pointer-events: none; }
+#ui > * { pointer-events: auto; }
+
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+/* ---------- bevelled boxes (Mindustry-style clipped corners) ---------- */
+.btn, .dropdown, .modal, .toast, .planet-panel li button {
+  clip-path: polygon(
+    var(--bevel) 0, calc(100% - var(--bevel)) 0, 100% var(--bevel),
+    100% calc(100% - var(--bevel)), calc(100% - var(--bevel)) 100%,
+    var(--bevel) 100%, 0 calc(100% - var(--bevel)), 0 var(--bevel)
+  );
+}
+
+.btn {
+  --b: var(--line);
+  --fill: var(--panel-solid);
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-width: 190px;
+  height: 52px;
+  padding: 0 22px;
+  font: 600 18px "Chakra Petch", sans-serif;
+  color: var(--ink);
+  background: var(--b);
+  border: 0;
+  outline: none;
+  cursor: pointer;
+  transition: transform 0.12s ease, color 0.15s ease;
+}
+.btn::after {
+  /* inner fill, inset by the border width, with a matching smaller bevel */
+  --i: calc(var(--bevel) - 1px);
+  content: "";
+  position: absolute;
+  inset: 3px;
+  z-index: -1;
+  background: var(--fill);
+  clip-path: polygon(
+    var(--i) 0, calc(100% - var(--i)) 0, 100% var(--i),
+    100% calc(100% - var(--i)), calc(100% - var(--i)) 100%,
+    var(--i) 100%, 0 calc(100% - var(--i)), 0 var(--i)
+  );
+}
+.btn:hover, .btn:focus-visible { --b: var(--accent); color: var(--accent); }
+.btn:active { transform: translateY(1px) scale(0.99); }
+.btn .ico { width: 24px; height: 24px; flex: none; }
+.btn.primary { --b: var(--accent); color: var(--accent); min-width: 260px; }
+.btn.primary:hover { color: #1a1406; }
+.btn.primary:hover { --fill: var(--accent); }
+.btn.danger { --b: var(--danger); color: var(--danger); }
+.btn.small { min-width: 0; height: 40px; font-size: 15px; padding: 0 16px; }
+
+.icon-btn {
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  background: none; border: 0;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.icon-btn svg { width: 24px; height: 24px; }
+.icon-btn:hover { color: var(--accent); }
+
+/* ---------- layout ---------- */
+.top-left { position: absolute; top: 22px; left: 26px; pointer-events: none; }
+.top-left h1 {
+  margin: 4px 0 0;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.8);
+}
+
+.surface-toggle {
+  --bevel: 7px;
+  pointer-events: auto;
+  display: inline-flex;
+  margin-top: 12px;
+  padding: 3px;
+  gap: 3px;
+  background: var(--line);
+  clip-path: polygon(
+    var(--bevel) 0, calc(100% - var(--bevel)) 0, 100% var(--bevel),
+    100% calc(100% - var(--bevel)), calc(100% - var(--bevel)) 100%,
+    var(--bevel) 100%, 0 calc(100% - var(--bevel)), 0 var(--bevel)
+  );
+}
+.surface-toggle button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 14px;
+  border: 0;
+  background: var(--panel-solid);
+  color: var(--muted);
+  font: 600 14px "Chakra Petch", sans-serif;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+.surface-toggle button:first-child { clip-path: polygon(5px 0, 100% 0, 100% 100%, 5px 100%, 0 calc(100% - 5px), 0 5px); }
+.surface-toggle button:last-child { clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%); }
+.surface-toggle button svg { width: 18px; height: 18px; flex: none; }
+.surface-toggle button:hover { color: var(--ink); }
+.surface-toggle button[aria-checked="true"] { background: var(--accent); color: #1a1406; }
+.surface-toggle button:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
+.surface-toggle.busy button[aria-checked="true"] { animation: busy 0.9s ease-in-out infinite alternate; }
+@keyframes busy { to { background: #b8923f; } }
+
+.top-right { position: absolute; z-index: 5; top: 18px; right: 18px; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.top-right .btn { min-width: 0; height: 44px; font-size: 16px; }
+
+.dropdown {
+  width: 280px;
+  padding: 10px;
+  background: rgba(10, 10, 18, 0.94);
+  border: 0;
+  box-shadow: inset 0 0 0 2px var(--line);
+}
+.dropdown button {
+  width: 100%;
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px;
+  background: none; border: 2px solid transparent;
+  color: var(--ink);
+  font: 600 16px "Chakra Petch", sans-serif;
+  text-align: left;
+  cursor: pointer;
+}
+.dropdown button:hover { color: var(--accent); }
+.dropdown button.active { border-color: var(--accent); }
+.dropdown .star-dot { width: 14px; height: 14px; border-radius: 50%; flex: none; box-shadow: 0 0 10px currentColor; }
+.dropdown .meta { margin-left: auto; font-size: 12px; color: var(--muted); font-weight: 400; }
+.dropdown hr { border: 0; border-top: 1px solid #2a2a36; margin: 6px 0; }
+
+.planet-panel {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 250px;
+  padding-right: 6px;
+  max-height: 60vh;
+  display: flex;
+  flex-direction: column;
+}
+.panel-title {
+  text-align: center;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 19px;
+  padding: 6px 0 8px;
+  border-bottom: 3px solid var(--accent);
+  margin: 0 6px 8px;
+}
+#planet-list { list-style: none; margin: 0; padding: 0 2px; overflow-y: auto; scrollbar-width: thin; }
+#planet-list li { margin: 4px 0; }
+#planet-list li button {
+  --bevel: 6px;
+  width: 100%;
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px;
+  background: rgba(8, 8, 14, 0.55);
+  border: 0;
+  box-shadow: inset 0 0 0 3px transparent;
+  color: var(--ink);
+  font: 600 17px "Chakra Petch", sans-serif;
+  cursor: pointer;
+  transition: box-shadow 0.15s, color 0.15s;
+}
+#planet-list li button:hover { color: var(--accent); }
+#planet-list li button.active { box-shadow: inset 0 0 0 3px var(--accent); background: rgba(8, 8, 14, 0.85); }
+#planet-list .swatch { width: 12px; height: 12px; border-radius: 50%; flex: none; }
+#planet-list .name { flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#planet-list .pct { font-size: 12px; font-weight: 400; color: var(--muted); }
+#planet-list .saved { color: var(--claim); font-size: 12px; letter-spacing: 0.08em; }
+
+.info {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  width: min(420px, calc(100vw - 32px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+}
+.info > * { pointer-events: auto; }
+.info-tools { display: flex; align-items: center; gap: 10px; width: 100%; justify-content: center; }
+.info-text { text-align: center; min-width: 0; flex: 1; }
+.info-name { font-size: 26px; font-weight: 700; line-height: 1.1; text-shadow: 0 2px 14px #000; }
+.info-course { font-size: 15px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.progress { width: 100%; display: flex; align-items: center; gap: 12px; }
+.progress-bar { flex: 1; height: 8px; background: rgba(255, 255, 255, 0.1); overflow: hidden; }
+.progress-fill { height: 100%; width: 0; background: linear-gradient(90deg, #ff8a1f, var(--claim)); box-shadow: 0 0 12px var(--claim); transition: width 0.8s cubic-bezier(.2,.8,.2,1); }
+.progress-label { font-size: 13px; color: var(--muted); white-space: nowrap; }
+.progress-label.saved { color: var(--claim); font-weight: 600; }
+
+.corner { position: absolute; bottom: 18px; }
+.bottom-left { left: 18px; }
+.bottom-right { right: 18px; }
+
+.hint {
+  position: absolute;
+  top: 142px;
+  left: 26px;
+  font-size: 12px;
+  color: var(--muted);
+  opacity: 0.7;
+  pointer-events: none;
+  transition: opacity 1s;
+}
+
+/* ---------- floating 3D labels ---------- */
+#labels { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+.label {
+  position: absolute;
+  left: 0; top: 0;
+  transform: translate(-50%, 0);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  text-shadow: 0 1px 6px #000;
+  white-space: nowrap;
+  transition: opacity 0.25s, color 0.2s;
+}
+.label.hover { color: var(--accent); }
+.label .sub { display: block; font-size: 10px; letter-spacing: 0.04em; text-transform: none; color: var(--muted); font-weight: 400; text-align: center; }
+
+/* ---------- modals ---------- */
+#modal-root:empty { display: none; }
+.backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(3px);
+  display: grid; place-items: center;
+  z-index: 20;
+  animation: fade 0.2s ease;
+}
+.modal {
+  --bevel: 14px;
+  width: min(560px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding: 26px 28px 24px;
+  background: rgba(10, 10, 18, 0.97);
+  box-shadow: inset 0 0 0 3px var(--line);
+  animation: pop 0.25s cubic-bezier(.2,1.3,.4,1);
+}
+.modal h2 { margin: 0 0 4px; font-size: 24px; color: var(--accent); }
+.modal p.lead { margin: 0 0 18px; color: var(--muted); font-size: 14px; }
+.field { display: grid; gap: 6px; margin-bottom: 14px; }
+.field label, .field .lbl { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.field input[type="text"], .field input[type="number"] {
+  width: 100%;
+  padding: 10px 12px;
+  background: #07070d;
+  border: 2px solid var(--line);
+  color: var(--ink);
+  font: 500 16px "Chakra Petch", sans-serif;
+  outline: none;
+}
+.field input:focus { border-color: var(--accent); }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.biomes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.biome {
+  display: grid; justify-items: center; gap: 6px;
+  padding: 10px 4px 8px;
+  background: #07070d;
+  border: 2px solid #22222c;
+  color: var(--ink);
+  font: 500 12px "Chakra Petch", sans-serif;
+  cursor: pointer;
+}
+.biome:hover { border-color: var(--line); }
+.biome.active { border-color: var(--accent); color: var(--accent); }
+.biome .orb { width: 30px; height: 30px; border-radius: 50%; }
+.seg { display: flex; gap: 8px; }
+.seg button { flex: 1; padding: 8px; background: #07070d; border: 2px solid #22222c; color: var(--ink); font: 600 14px "Chakra Petch", sans-serif; cursor: pointer; }
+.seg button.active { border-color: var(--accent); color: var(--accent); }
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+.hue-track { height: 6px; margin-top: -2px; background: linear-gradient(90deg, red, #ff0, lime, cyan, blue, #f0f, red); opacity: 0.6; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px; }
+.modal-actions .btn { min-width: 140px; height: 46px; font-size: 16px; }
+
+/* ---------- launch overlay ---------- */
+.launch-card { text-align: center; }
+.launch-card .big { font-size: 34px; font-weight: 700; margin: 6px 0; }
+.launch-card code { color: var(--accent); font-size: 13px; }
+.demo-note { margin-top: 16px; padding: 12px; border: 1px dashed #3a3a48; color: var(--muted); font-size: 13px; text-align: left; }
+.demo-note strong { color: var(--ink); }
+
+/* ---------- toasts ---------- */
+#toast-root { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); display: grid; gap: 8px; z-index: 30; pointer-events: none; }
+.toast {
+  padding: 12px 22px;
+  background: rgba(10, 10, 18, 0.94);
+  box-shadow: inset 0 0 0 2px var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+  animation: toast 3.2s ease forwards;
+}
+
+/* ---------- warp + loading ---------- */
+#warp {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.9), rgba(120,140,255,0.4) 30%, #000 75%);
+  opacity: 0;
+  z-index: 15;
+}
+#loading {
+  position: fixed; inset: 0;
+  display: grid; place-items: center;
+  background: #000;
+  z-index: 40;
+  transition: opacity 0.8s ease;
+}
+#loading.done { opacity: 0; pointer-events: none; }
+.loading-inner { text-align: center; }
+.loading-title { font-size: 26px; font-weight: 700; margin: 8px 0 18px; }
+.loading-bar { width: 260px; height: 4px; background: #1c1c26; margin: 0 auto; }
+#loading-fill { height: 100%; width: 0; background: var(--accent); transition: width 0.3s; }
+
+@keyframes fade { from { opacity: 0; } }
+@keyframes pop { from { opacity: 0; transform: scale(0.94); } }
+@keyframes toast {
+  0% { opacity: 0; transform: translateY(-8px); }
+  10%, 80% { opacity: 1; transform: none; }
+  100% { opacity: 0; }
+}
+
+/* ---------- small screens ---------- */
+@media (max-width: 760px) {
+  .planet-panel {
+    top: auto; bottom: 214px; right: 0; left: 0;
+    transform: none; width: auto; max-height: none;
+    padding: 0 16px;
+  }
+  .panel-title { display: none; }
+  #planet-list { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+  #planet-list::-webkit-scrollbar { display: none; }
+  #planet-list li { margin: 0; flex: none; }
+  #planet-list li button { font-size: 14px; padding: 8px 12px; }
+  #planet-list .pct { display: none; }
+  .info { bottom: 78px; }
+  .info-name { font-size: 22px; }
+  .btn.primary { min-width: 0; width: 100%; }
+  .corner { min-width: 0; height: 44px; font-size: 15px; padding: 0 14px; }
+  .bottom-left { left: 16px; }
+  .bottom-right { right: 16px; }
+  .top-left { left: 16px; top: 16px; }
+  .top-left h1 { font-size: 22px; }
+  .surface-toggle { margin-top: 8px; }
+  .surface-toggle button { height: 32px; padding: 0 10px; font-size: 13px; }
+  .top-right { right: 16px; top: 14px; }
+  .hint { display: none; }
+  .biomes { grid-template-columns: repeat(5, 1fr); }
+  .row { grid-template-columns: 1fr; gap: 0; }
+}
